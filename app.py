@@ -1,14 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for
 import psycopg2
+import os
 
+#OBTENER TOKEN DISCORD | OS
+HOST_DB = os.environ.get("HOST_DB")
+POSTGRES_DB = os.environ.get("POSTGRES_DB")
+POSTGRES_USER = os.environ.get("POSTGRES_USER")
+POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 app = Flask(__name__)
 
 
 def get_db():
-    conn = psycopg2.connect(host='192.168.18.50',
-                            dbname='postgres',
-                            user='postgres',
-                            password='123456@')
+    conn = psycopg2.connect(host=HOST_DB,
+                            dbname=POSTGRES_DB,
+                            user=POSTGRES_USER,
+                            password=POSTGRES_PASSWORD)
     return conn
 
 @app.route('/')
@@ -80,4 +86,4 @@ def dictfetchall(cursor):
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True)
